@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 @dataclass(frozen=True)
 class train:
     name: str
-    num: int
+    num: str
     time: str
 
 
@@ -31,6 +31,7 @@ class Staff:
                 time=time
             )
         )
+
         self.trains.sort(key=lambda train: train.name)
 
     def __str__(self):
@@ -54,33 +55,36 @@ class Staff:
         table.append(line)
 
         # Вывести данные о всех сотрудниках.
-        for idx, train in enumerate(trains, 1):
-            print(
+        for idx, train in enumerate(self.trains, 1):
+            table.append(
                 '| {:>4} | {:<30} | {:<20} | {:>17} |'.format(
                     idx,
-                    train.get('name', ''),
-                    train.get('num', ''),
-                    train.get('time', 0)
+                    train.name,
+                    train.num,
+                    train.time
                 )
             )
+
         table.append(line)
 
         return '\n'.join(table)
 
     def select(self):
+
         parts = command.split(' ', maxsplit=2)
 
-        number = int(parts[1])
+        numbers = int(parts[1])
 
-        count = 0
-        for train in trains:
-            if train.get('num') == number:
-                count += 1
-                print('Номер поезда:', train.get('num', ''))
-                print('Пункт назначения:', train.get('name', ''))
-                print('Время отправления:', train.get('time', ''))
+        c = 0
 
-        if count == 0:
+        for trainn in self.trains:
+            if trainn.num == numbers:
+                c += 1
+                print('Номер поезда:', trainn.num)
+                print('Пункт назначения:', trainn.name)
+                print('Время отправления:', trainn.time)
+
+        if c == 0:
             print("Таких поездов нет!")
 
     def load(self, filename):
@@ -99,7 +103,7 @@ class Staff:
                 elif element.tag == 'num':
                     num = element.text
                 elif element.tag == 'time':
-                    time = list(element.text)
+                    time = element.text
 
                 if name is not None and num is not None \
                         and time is not None:
@@ -133,7 +137,7 @@ class Staff:
 
 
 if __name__ == '__main__':
-    trains = ()
+    trains = []
     staff = Staff()
     # Организовать бесконечный цикл запроса команд.
     while True:
@@ -142,17 +146,12 @@ if __name__ == '__main__':
         # Выполнить действие в соответствие с командой.
         if command == 'exit':
             break
-        elif command == 'add':
-            # Запросить данные о работнике.
-            name = input("Название пункта назначения: ")
-            num = int(input("Номер поезда: "))
-            time = input("Время отправления: ")
 
-            train = {
-                'name': name,
-                'num': num,
-                'time': time,
-            }
+        elif command == 'add':
+            # Запросить данные о поезде.
+            name = input("Название пункта назначения: ")
+            num = input("Номер поезда: ")
+            time = input("Время отправления: ")
 
             staff.add(name, num, time)
 
@@ -162,18 +161,18 @@ if __name__ == '__main__':
         elif command.startswith('select '):
             parts = command.split(' ', maxsplit=2)
 
-            number = int(parts[1])
+            numbers = int(parts[1])
 
-            count = 0
+            c = 0
 
-            for train in trains:
-                if train.get('num') == number:
-                    count += 1
-                    print('Номер поезда:', train.get('num', ''))
-                    print('Пункт назначения:', train.get('name', ''))
-                    print('Время отправления:', train.get('time', ''))
+            for trainn in trains:
+                if trainn.num == numbers:
+                    c += 1
+                    print('Номер поезда:', trainn.num)
+                    print('Пункт назначения:', trainn.name)
+                    print('Время отправления:', trainn.time)
 
-            if count == 0:
+            if c == 0:
                 print("Таких поездов нет!")
 
         elif command.startswith('load '):

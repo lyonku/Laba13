@@ -182,10 +182,12 @@ if __name__ == '__main__':
     print(f"r1 = {r1}")
     r2 = Rational(5, 6)
     print(f"r2 = {r2}")
+
     print(f"r1 + r2 = {r1 + r2}")
     print(f"r1 - r2 = {r1 - r2}")
     print(f"r1 * r2 = {r1 * r2}")
     print(f"r1 / r2 = {r1 / r2}")
+
     print(f"r1 == r2: {r1 == r2}")
     print(f"r1 != r2: {r1 != r2}")
     print(f"r1 > r2: {r1 > r2}")
