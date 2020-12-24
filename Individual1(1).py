@@ -37,15 +37,6 @@ class Payment:
         self.handedAmount()
         self.experience()
 
-    def __float__(self):
-        return self.__percent
-
-    def __round__(self, n=0):
-        return round(self.handAmount)
-
-    def __str__(self):
-        return f"Expirience: {self.exp} years \nAmount: {self.amount} - {self.heldAmount} = {self.handAmount}"
-
     def accruedAmount(self):
         a = self.__salary / self.__workingDays
         b = a * self.__daysWorked
@@ -62,9 +53,64 @@ class Payment:
     def experience(self):
         self.exp = datetime.now().year - self.__year
 
+    def __round__(self, n=0):
+        return round(self.handAmount)
+
+    def __str__(self):
+        return f"Experience: {self.exp} years \nCalculations: {self.amount} - {self.heldAmount} = {self.handAmount}"
+
+    def __lt__(self, other):
+        return self.__salary < other.__salary
+
+    def __eq__(self, other):
+        return self.__workingDays == other.__workingDays
+
+    def __ne__(self, other):
+        return self.__percent != other.__percent
+
+    def __gt__(self, other):
+        return self.__daysWorked > other.__daysWorked
+
+    def __ge__(self, other):
+        return self.exp >= other.exp
+
+    def __le__(self, other):
+        return self.handAmount <= other.handAmount
+
+    def __truediv__(self, other):
+        if self.__salary >= other.__salary:
+            return self.__salary / other.__salary
+        else:
+            return other.__salary / self.__salary
+
+    def __mul__(self, other):
+        return self.__percent * other.__percent
+
+    def __sub__(self, other):
+        if self.__daysWorked >= other.__daysWorked:
+            return self.__daysWorked - other.__daysWorked
+        else:
+            return other.__daysWorked - self.__daysWorked
+
+    def __add__(self, other):
+        return self.__workingDays + other.__workingDays
+
 
 if __name__ == '__main__':
     r1 = Payment(fullName="Zhenya", salary=15000, year=2017, percent=15, daysWorked=20, workingDays=24)
+    r2 = Payment(fullName="Zhenya", salary=20000, year=2015, percent=10, daysWorked=23, workingDays=24)
 
     print(f"{r1}")
-    print(f"Сalculated amount handed out: {round(r1)}")
+    print(f"Сalculated amount handed out: {round(r1)}\n")
+
+    print(f"salary1 < salary2: {r1 < r2}")
+    print(f"workingDays1 > workingDays2: {r1 > r2}")
+    print(f"percent1 != percent2: {r1 != r2}")
+    print(f"daysWorked1 == daysWorked2: {r1 == r2}")
+    print(f"Experience1 >= Experience2: {r1 >= r2}")
+    print(f"handAmount1 <= handAmount2: {r1 <= r2}\n")
+
+    print(f"Difference in salary(division): {r1 / r2}")
+    print(f"multiplication of percent: {r1 * r2}")
+    print(f"Addition of working days: {r1 + r2}")
+    print(f"Difference in daysWorked(subtraction): {r1 - r2}")
