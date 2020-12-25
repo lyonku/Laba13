@@ -76,7 +76,7 @@ class Payment:
         return self.exp >= other.exp
 
     def __le__(self, other):
-        return self.handamount <= other.handAmount
+        return self.handamount <= other.handamount
 
     def __truediv__(self, other):
         if self.__salary >= other.__salary:
