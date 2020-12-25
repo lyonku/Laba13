@@ -28,64 +28,62 @@ class Payment:
         self.__percent = float(percent)
         self.__daysworked = int(daysworked)
         self.__workingdays = int(workingdays)
-        self.amount = 0
-        self.heldamount = 0
-        self.handamount = 0
-        self.exp = 0
+        # self.amount = 0
+        # self.heldamount = 0
+        # self.handamount = 0
+        # self.exp = 0
 
-        self.accrued_amount()
-        self.withheld_amount()
-        self.handed_amount()
-        self.experience()
+        # self.accrued_amount()
+        # self.withheld_amount()
+        # self.handed_amount()
+        # self.experience()
 
     def accrued_amount(self):
         a = self.__salary / self.__workingdays
         b = a * self.__daysworked
         percent = self.__percent / 100 + 1
-        self.amount = b * percent
+        return b * percent
 
     def withheld_amount(self):
         b = (self.__salary / self.__workingdays) * self.__daysworked
-        self.heldamount = b * (0.13 + 0.01)
+
+        return b * (0.13 + 0.01)
 
     def handed_amount(self):
-        self.handamount = self.amount - self.heldamount
+        a = self.__salary / self.__workingdays
+        b = a * self.__daysworked
+        percent = self.__percent / 100 + 1
+        return b * percent - (self.__salary / self.__workingdays) * self.__daysworked
 
     def experience(self):
-        self.exp = datetime.now().year - self.__year
+        return 2020 - self.__year
 
-    def __round__(self, n=0):
-        return round(self.handamount)
-
-    def __str__(self):
-        return f"Experience: {self.exp} years \nCalculations: {self.amount} - {self.heldamount} = {self.handamount}"
+    # def __str__(self):
+    #     return f"Experience: {self.exp} years \nCalculations: {self.amount} - {self.heldamount} = {self.handamount}"
 
     def __lt__(self, other):
         return self.__salary < other.__salary
 
     def __eq__(self, other):
-        return self.__workingdays == other.__workingdays
+        return self.__salary == other.__salary
 
     def __ne__(self, other):
-        return self.__percent != other.__percent
+        return self.__salary != other.__salary
 
     def __gt__(self, other):
-        return self.__daysworked > other.__daysworked
+        return self.__salary > other.__salary
 
     def __ge__(self, other):
-        return self.exp >= other.exp
+        return self.__salary >= other.__salary
 
     def __le__(self, other):
-        return self.handamount <= other.handamount
+        return self.__salary <= other.__salary
 
     def __truediv__(self, other):
         if self.__salary >= other.__salary:
             return self.__salary / other.__salary
         else:
             return other.__salary / self.__salary
-
-    def __mul__(self, other):
-        return self.__percent * other.__percent
 
     def __sub__(self, other):
         if self.__daysworked >= other.__daysworked:
@@ -102,16 +100,15 @@ if __name__ == '__main__':
     r2 = Payment(full_name="Zhenya", salary=20000, year=2015, percent=10, daysworked=23, workingdays=24)
 
     print(f"{r1}")
-    print(f"Сalculated amount handed out: {round(r1)}\n")
+    # print(f"Сalculated amount handed out: {round(r1)}\n")
 
     print(f"salary1 < salary2: {r1 < r2}")
-    print(f"workingDays1 > workingDays2: {r1 > r2}")
-    print(f"percent1 != percent2: {r1 != r2}")
-    print(f"daysWorked1 == daysWorked2: {r1 == r2}")
-    print(f"Experience1 >= Experience2: {r1 >= r2}")
-    print(f"handAmount1 <= handAmount2: {r1 <= r2}\n")
+    print(f"salary1 > salary2: {r1 > r2}")
+    print(f"salary1 != salary2: {r1 != r2}")
+    print(f"salary1 == salary2: {r1 == r2}")
+    print(f"salary1 >= salary2: {r1 >= r2}")
+    print(f"salary1 <= salary2: {r1 <= r2}\n")
 
     print(f"Difference in salary(division): {r1 / r2}")
-    print(f"multiplication of percent: {r1 * r2}")
     print(f"Addition of working days: {r1 + r2}")
     print(f"Difference in daysWorked(subtraction): {r1 - r2}")
